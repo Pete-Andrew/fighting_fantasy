@@ -32,14 +32,15 @@ let beastman = new Monster ("beastman",8,16,8,4,6,10,2["axe","leather armour"]);
 let ogre = new Monster ("Ogre",7,16,7,5,6,12,4);
 
 let possibleMonsters = [lizardman,beastman,ogre];
-let randomMonsterIndex = parseInt(possibleMonsters[Math.floor(Math.random() * possibleMonsters.length)]);
+let randomMonsterIndex = Math.floor(Math.random() * possibleMonsters.length);
 console.log("random Monster index = " + randomMonsterIndex);
-// let randomMonsterName = possibleMonsters[Math.floor(Math.random() * possibleMonsters.length)].type;
+let randomMonsterType = possibleMonsters[randomMonsterIndex].type;
+console.log("random Monster is a = " + randomMonsterType);
 
 // updates the global random D12 variable each time it is called
 function randomD12 () {
     randomD12Num = parseInt(Math.floor(Math.random() * 11) + 2);   
-    console.log("random D12 = " + randomD12Num);
+    // console.log("random D12 = " + randomD12Num);
 }
 
 function getHeroAttackStrength() {
@@ -48,24 +49,22 @@ function getHeroAttackStrength() {
     console.log("Hero attack strength = " + heroAttackStrength);
 }
 
-function getMonsterAttackStrength(randomMonster) {
+function getMonsterAttackStrength() {
     randomD12();
-    monsterAttackStrength = randomMonster.skill+randomD12Num;
+    monsterAttackStrength = possibleMonsters[randomMonsterIndex].skill+randomD12Num;
     console.log("Monster attack strength = " + monsterAttackStrength);
 }
 
-
-// function fight (hero, monster) {
+function fight () {
     
-//     getHeroAttackStrength();
-//     getMonsterAttackStrength(randomMonster);
-//     console.log("monster is a " + monster);
+    getHeroAttackStrength();
+    getMonsterAttackStrength();
+    console.log("monster is a " + randomMonsterType);
     
-//     if (hero.skill+randomD12Num > monster.skill+randomD12Num) {
-//         console.log("hero attack strength this turn = " + heroAttackStrength);
-//         console.log("hero wounds! Monster goes arrrrrgghhh")
-//     } else {
-//         console.log("monster wounds the hero, eeeeek!")
-//     }
-// }
-// fight(hero, randomMonster);
+    if (heroAttackStrength > monsterAttackStrength) {
+        console.log("hero wounds! Monster goes arrrrrgghhh")
+    } else {
+        console.log("monster wounds the hero, eeeeek!")
+    }
+}
+fight();
