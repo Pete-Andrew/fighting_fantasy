@@ -1,3 +1,4 @@
+const prompt = require('prompt-sync')();
 let randomD12Num;
 let heroAttackStrength;
 let monsterAttackStrength;
@@ -31,9 +32,12 @@ let lizardman = new Monster ("Lizardman",/*skill*/12,/*stamina*/14,/*luck*/10,/*
 let beastman = new Monster ("beastman",8,16,8,4,6,10,2["axe","leather armour"]);
 let ogre = new Monster ("Ogre",7,16,7,5,6,12,4);
 
+//array of all possible monsters
 let possibleMonsters = [lizardman,beastman,ogre];
+// chooses a random monster, this sets the index value
 let randomMonsterIndex = Math.floor(Math.random() * possibleMonsters.length);
-console.log("random Monster index = " + randomMonsterIndex);
+// console.log("random Monster index = " + randomMonsterIndex);
+//gets the name field for the random monster
 let randomMonsterType = possibleMonsters[randomMonsterIndex].type;
 console.log("random Monster is a = " + randomMonsterType);
 
@@ -63,8 +67,36 @@ function fight () {
     
     if (heroAttackStrength > monsterAttackStrength) {
         console.log("hero wounds! Monster goes arrrrrgghhh")
+        let currentMonsterStamina = (possibleMonsters[randomMonsterIndex].stamina)-2;
+        // need to update the specified monster stamina
+        console.log("monster stamina = " + currentMonsterStamina);
+        fightAgainYorN();
+
+
     } else {
         console.log("monster wounds the hero, eeeeek!")
+        fightAgainYorN();
+
     }
 }
 fight();
+
+//ask if you want to fight or flee
+function fightAgainYorN () {    
+    const name = prompt('Fight (Y) or flee (N)?');        
+    let answer = `${name}`;
+    console.log(answer);
+
+    if (answer === "Y" || answer === "y") {
+        console.log("fight again!");
+        fight();
+    } else if (answer === "N" || answer === "n") {
+        console.log("Run for your life!");
+    }  else {
+        console.log("that's not a Y/N answer, please choose again");
+        fightAgainYorN();
+    } 
+}
+
+
+// Run npm install prompt-sync
