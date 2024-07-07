@@ -29,6 +29,56 @@ function Monster(type, skill, stamina, luck, damage, speed, toughness, armour, i
     this.items = items;
 }
 
+//build an object for weapons
+let weapons = {
+    sword:{
+        skill:4,
+        speed:6,
+        damage:2,
+        rend:2
+    },
+    axe:{
+        skill:4,
+        speed:6,
+        damage:2,
+        rend:2,
+    },
+    knife:{
+        skill:2,
+        speed:6,
+        damage:1,
+        rend:1,
+    },
+    mace: {
+        skill: 2,
+        speed: 2,
+        damage:4,
+        rend:4,
+    },
+    halberd: {
+        skill:3,
+        speed:2,
+        damage:4,
+        rend:3,
+    }
+}
+
+let weaponsInventoryLength = Object.keys(weapons).length;
+// console.log("Weapons Inventory Length = " + weaponsInventoryLength);
+
+// use the object keys method. The Object.keys() method returns an array with the keys of an object. The Object.keys() method does not change the original object.
+let randomWeapon = Object.keys(weapons)[Math.floor(Math.random() * weaponsInventoryLength)]; //square brackets gives a random number
+console.log("The monster carries a rusty " + randomWeapon);
+
+console.log("weapons skill mod = " + weapons[randomWeapon].skill) //need to pass random weapon
+console.log("weapons speed mod = " + weapons[randomWeapon].speed) //need to pass random weapon
+console.log("weapons damage mod = " + weapons[randomWeapon].damage) //need to pass random weapon
+console.log("weapons rend mod = " + weapons[randomWeapon].rend) //need to pass random weapon
+//build and object for armour
+
+
+//build and object for other items
+
 let hero = new Player("elf",/*skill*/12,/*stamina*/12,/*luck*/12,/*damage*/4,/*speed*/10,/*toughness*/6,/*armour*/2, ["sword", "shield", "leather armour"]);
 let lizardman = new Monster("Lizardman",/*skill*/12,/*stamina*/14,/*luck*/10,/*damage*/4,/*speed*/10,/*toughness*/7,/*armour*/4, ["halberd", "chainmail"]);
 let beastman = new Monster("beastman", 8, 16, 8, 4, 6, 10, 2["axe", "leather armour"]);
@@ -41,7 +91,7 @@ let randomMonsterIndex = Math.floor(Math.random() * possibleMonsters.length);
 
 //gets the name field for the random monster
 let randomMonsterType = possibleMonsters[randomMonsterIndex].type;
-console.log("random Monster is a = " + randomMonsterType);
+console.log("the random Monster is a " + randomMonsterType);
 
 // updates the global random D12 variable each time it is called
 function randomD12() {
@@ -57,7 +107,7 @@ function getHeroAttackStrength() {
 
 function getMonsterAttackStrength() {
     randomD12();
-    monsterAttackStrength = possibleMonsters[randomMonsterIndex].skill + randomD12Num;
+    monsterAttackStrength = possibleMonsters[randomMonsterIndex].skill + randomD12Num; //add weapons modifiers
     console.log("Monster attack strength = " + monsterAttackStrength);
 }
 
