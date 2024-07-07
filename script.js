@@ -1,4 +1,6 @@
 let randomD12Num;
+let heroAttackStrength;
+let monsterAttackStrength;
 
 function Player (type,skill,stamina,luck,damage,speed,toughness,armour,items) {
     this.type = type;
@@ -35,17 +37,38 @@ let randomMonster = possibleMonsters[Math.floor(Math.random() * possibleMonsters
 console.log(possibleMonsters);
 console.log(hero.items);
 
-
+// updates the global random D12 variable each time it is called
 function randomD12 () {
-    randomD12Num = parseInt(Math.floor(Math.random() * 12) + 1);   
+    randomD12Num = parseInt(Math.floor(Math.random() * 11) + 2);   
     console.log("random D12 = " + randomD12Num);
 }
-randomD12();
+
+
+function getHeroAttackStrength() {
+    randomD12();
+    heroAttackStrength = hero.skill+randomD12Num;
+    console.log("Hero attack strength = " + heroAttackStrength);
+
+}
+
+function getMonsterAttackStrength(randomMonster) {
+    
+    monsterAttackStrength = randomMonster.skill+randomD12Num;
+    console.log("Monster attack strength = " + monsterAttackStrength);
+}
+
 
 function fight (hero, monster) {
+    
+    getHeroAttackStrength();
+    getMonsterAttackStrength(randomMonster);
     console.log("monster is a " + monster);
+    
     if (hero.skill+randomD12Num > monster.skill+randomD12Num) {
+        console.log("hero attack strength this turn = " + heroAttackStrength);
         console.log("hero wounds! Monster goes arrrrrgghhh")
+    } else {
+        console.log("monster wounds the hero, eeeeek!")
     }
 }
 fight(hero, randomMonster);
