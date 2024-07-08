@@ -29,6 +29,11 @@ function Monster(type, skill, stamina, luck, damage, speed, toughness, armour, i
     this.items = items;
 }
 
+//Skill: increases attacks strength
+//Speed: allows you to get first hit in
+//Damage: the amount of bonus damage a weapon causes 
+//Rend: the amount of armour the weapon negates
+
 //build an object for weapons
 let weapons = {
     sword:{
@@ -38,7 +43,7 @@ let weapons = {
         rend:2
     },
     axe:{
-        skill:4,
+        skill:3,
         speed:6,
         damage:2,
         rend:2,
@@ -63,26 +68,51 @@ let weapons = {
     }
 }
 
+let armour =
+    {
+    leather: {
+        skill:2,
+        speed:0,
+        protection:2,        
+    },
+    chainmail: {
+        skill:2,
+        speed:-1,
+        protection:3,  
+    },
+    plate: {
+        skill:1,
+        speed:-2,
+        protection:4,        
+    },
+ }
+
 let weaponsInventoryLength = Object.keys(weapons).length;
+let armourInventoryLength = Object.keys(armour).length;
+
 // console.log("Weapons Inventory Length = " + weaponsInventoryLength);
 
 // use the object keys method. The Object.keys() method returns an array with the keys of an object. The Object.keys() method does not change the original object.
 let randomWeapon = Object.keys(weapons)[Math.floor(Math.random() * weaponsInventoryLength)]; //square brackets gives a random number
-console.log("The monster carries a rusty " + randomWeapon);
+let monsterWeaponsSkillBonus = weapons[randomWeapon].skill;
 
-console.log("weapons skill mod = " + weapons[randomWeapon].skill) //need to pass random weapon
-console.log("weapons speed mod = " + weapons[randomWeapon].speed) //need to pass random weapon
-console.log("weapons damage mod = " + weapons[randomWeapon].damage) //need to pass random weapon
-console.log("weapons rend mod = " + weapons[randomWeapon].rend) //need to pass random weapon
+
+let randomArmour = Object.keys(armour)[Math.floor(Math.random() * armourInventoryLength)];
+let monsterArmourSkillBonus = armour[randomArmour].skill;
+let monsterArmourProtectionBonus = armour[randomArmour].protection;
+
+//console.log("weapons skill mod = " + weapons[randomWeapon].skill) //need to pass random weapon
+//console.log("weapons speed mod = " + weapons[randomWeapon].speed) //need to pass random weapon
+//console.log("weapons damage mod = " + weapons[randomWeapon].damage) //need to pass random weapon
+//console.log("weapons rend mod = " + weapons[randomWeapon].rend) //need to pass random weapon
 //build and object for armour
 
+//build and object for other items e.g. magic items, explosives etc. 
 
-//build and object for other items
-
-let hero = new Player("elf",/*skill*/12,/*stamina*/12,/*luck*/12,/*damage*/4,/*speed*/10,/*toughness*/6,/*armour*/2, ["sword", "shield", "leather armour"]);
-let lizardman = new Monster("Lizardman",/*skill*/12,/*stamina*/14,/*luck*/10,/*damage*/4,/*speed*/10,/*toughness*/7,/*armour*/4, ["halberd", "chainmail"]);
-let beastman = new Monster("beastman", 8, 16, 8, 4, 6, 10, 2["axe", "leather armour"]);
-let ogre = new Monster("Ogre", 7, 16, 7, 5, 6, 12, 4);
+let hero = new Player("elf",/*skill*/12,/*stamina*/12,/*luck*/12,/*damage*/4,/*speed*/10,/*toughness*/6,/*armour*/0, ["sword", "shield", "leather armour"]);
+let lizardman = new Monster("Lizardman",/*skill*/12,/*stamina*/14,/*luck*/10,/*damage*/4,/*speed*/10,/*toughness*/7,/*armour*/0, []);
+let beastman = new Monster("beastman", 8, 16, 8, 4, 6, 10, 0,[]);
+let ogre = new Monster("Ogre", 7, 16, 7, 5, 6, 12, 0, []);
 
 //array of all possible monsters
 let possibleMonsters = [lizardman, beastman, ogre];
@@ -90,8 +120,12 @@ let possibleMonsters = [lizardman, beastman, ogre];
 let randomMonsterIndex = Math.floor(Math.random() * possibleMonsters.length);
 
 //gets the name field for the random monster
+let randomMonster = possibleMonsters[randomMonsterIndex];
 let randomMonsterType = possibleMonsters[randomMonsterIndex].type;
 console.log("the random Monster is a " + randomMonsterType);
+console.log("The monster carries a rusty " + randomWeapon + " (skill +" + monsterWeaponsSkillBonus + ")" );
+console.log("The monster is wearing battered " + randomArmour + " armour" + " (skill +" + monsterArmourSkillBonus + ", protection +" + monsterArmourProtectionBonus + ")");
+console.log(randomMonster);
 
 // updates the global random D12 variable each time it is called
 function randomD12() {
@@ -102,13 +136,14 @@ function randomD12() {
 function getHeroAttackStrength() {
     randomD12();
     heroAttackStrength = hero.skill + randomD12Num;
-    console.log("Hero attack strength = " + heroAttackStrength);
+    console.log("Hero attack strength = " + heroAttackStrength );
 }
 
 function getMonsterAttackStrength() {
     randomD12();
-    monsterAttackStrength = possibleMonsters[randomMonsterIndex].skill + randomD12Num; //add weapons modifiers
+    monsterAttackStrength = randomMonster.skill + randomD12Num + monsterWeaponsSkillBonus + monsterArmourSkillBonus; 
     console.log("Monster attack strength = " + monsterAttackStrength);
+    // console.log(monsterWeaponsBonus);
 }
 
 
