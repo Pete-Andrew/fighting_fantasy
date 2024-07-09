@@ -5,6 +5,7 @@ let monsterAttackStrength;
 let currentMonsterStamina
 let currentHeroStamina = 12;
 
+
 function Player(type, skill, stamina, luck, damage, speed, toughness, armour, items) {
     this.type = type;
     this.skill = skill;
@@ -92,10 +93,13 @@ let armourInventoryLength = Object.keys(armour).length;
 
 // console.log("Weapons Inventory Length = " + weaponsInventoryLength);
 
+//
+let heroWeapon = weapons.sword
+
+//random weapons and armour for the monster
 // use the object keys method. The Object.keys() method returns an array with the keys of an object. The Object.keys() method does not change the original object.
 let randomWeapon = Object.keys(weapons)[Math.floor(Math.random() * weaponsInventoryLength)]; //square brackets gives a random number
 let monsterWeaponsSkillBonus = weapons[randomWeapon].skill;
-
 
 let randomArmour = Object.keys(armour)[Math.floor(Math.random() * armourInventoryLength)];
 let monsterArmourSkillBonus = armour[randomArmour].skill;
@@ -111,21 +115,24 @@ let monsterArmourProtectionBonus = armour[randomArmour].protection;
 
 let hero = new Player("elf",/*skill*/12,/*stamina*/12,/*luck*/12,/*damage*/4,/*speed*/10,/*toughness*/6,/*armour*/0, ["sword", "shield", "leather armour"]);
 let lizardman = new Monster("Lizardman",/*skill*/12,/*stamina*/14,/*luck*/10,/*damage*/4,/*speed*/10,/*toughness*/7,/*armour*/0, []);
+let hellHornChampion = new Monster("Hellhorn Champion",/*skill*/14,/*stamina*/16,/*luck*/10,/*damage*/4,/*speed*/12,/*toughness*/9,/*armour*/0, []);
 let beastman = new Monster("beastman", 8, 16, 8, 4, 6, 10, 0,[]);
 let ogre = new Monster("Ogre", 7, 16, 7, 5, 6, 12, 0, []);
 
 //array of all possible monsters
-let possibleMonsters = [lizardman, beastman, ogre];
+let possibleMonsters = [lizardman, hellHornChampion, beastman, ogre];
 // chooses a random monster, this sets the index value
 let randomMonsterIndex = Math.floor(Math.random() * possibleMonsters.length);
 
 //gets the name field for the random monster
 let randomMonster = possibleMonsters[randomMonsterIndex];
 let randomMonsterType = possibleMonsters[randomMonsterIndex].type;
-console.log("the random Monster is a " + randomMonsterType);
-console.log("The monster carries a rusty " + randomWeapon + " (skill +" + monsterWeaponsSkillBonus + ")" );
-console.log("The monster is wearing battered " + randomArmour + " armour" + " (skill +" + monsterArmourSkillBonus + ", protection +" + monsterArmourProtectionBonus + ")");
+console.log("the monster is a " + randomMonsterType);
+console.log(`The ${randomMonster.type} carries a rusty ` + randomWeapon + " (skill +" + monsterWeaponsSkillBonus + ")" );
+console.log(`The ${randomMonster.type} is wearing battered ` + randomArmour + " armour" + " (skill +" + monsterArmourSkillBonus + ", protection +" + monsterArmourProtectionBonus + ")");
+randomMonster.items = [randomWeapon, randomArmour];
 console.log(randomMonster);
+
 
 // updates the global random D12 variable each time it is called
 function randomD12() {
@@ -135,14 +142,14 @@ function randomD12() {
 
 function getHeroAttackStrength() {
     randomD12();
-    heroAttackStrength = hero.skill + randomD12Num;
+    heroAttackStrength = hero.skill + randomD12Num + heroWeapon.skill;
     console.log("Hero attack strength = " + heroAttackStrength );
 }
 
 function getMonsterAttackStrength() {
     randomD12();
     monsterAttackStrength = randomMonster.skill + randomD12Num + monsterWeaponsSkillBonus + monsterArmourSkillBonus; 
-    console.log("Monster attack strength = " + monsterAttackStrength);
+    console.log(`${randomMonsterType} attack strength = ` + monsterAttackStrength);
     // console.log(monsterWeaponsBonus);
 }
 
@@ -150,26 +157,28 @@ function getMonsterAttackStrength() {
 function fight() {
 
     if (currentMonsterStamina == 0 || currentMonsterStamina < 0) {
-        console.log("The monster lies dead at your feet");
+        console.log(`The ${randomMonsterType} lies dead at your feet`);
     } else if (currentHeroStamina == 0 || currentHeroStamina < 0) {
         console.log("You Died");
     } else {
 
         getHeroAttackStrength();
         getMonsterAttackStrength();
-        console.log("monster is a " + randomMonsterType);
+        // console.log("monster is a " + randomMonsterType);
 
         if (heroAttackStrength > monsterAttackStrength) {
-            console.log("hero wounds! Monster goes arrrrrgghhh")
+            console.log(`hero wounds! ${randomMonster.type} goes arrrrrgghhh`)
             currentMonsterStamina = (possibleMonsters[randomMonsterIndex].stamina);
 
             //updates the specified monster stamina as the fight goes on
             possibleMonsters[randomMonsterIndex].stamina = currentMonsterStamina - 2;
-            console.log("monster stamina = " + currentMonsterStamina);
+            console.log(`${randomMonster.type} stamina = ` + currentMonsterStamina);
             if (currentMonsterStamina == 0 || currentMonsterStamina < 0) {
                 console.log("The monster lies dead at your feet.");
                 return
             }
+
+
             // asks if you want to fight again
             fightAgainYorN();
 
@@ -178,7 +187,14 @@ function fight() {
             fightAgainYorN();
         }
         else {
-            console.log("monster wounds the hero, eeeeek!")
+            hero.stamina -= 2; //change this value to whatever the damage characteristic is of the monster
+            console.log(`${randomMonster.type} wounds the hero, eeeeek!`)
+            console.log("Hero stamina = " + hero.stamina);
+            
+            if (hero.stamina == 0 || hero.stamina < 0) {
+                console.log("You Died!");
+                return
+            }
             // reduce hero health 
             fightAgainYorN();
         }
