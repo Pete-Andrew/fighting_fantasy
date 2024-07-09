@@ -4,7 +4,7 @@ let heroAttackStrength;
 let monsterAttackStrength;
 let currentMonsterStamina
 let currentHeroStamina = 12;
-
+let battleRound = 0;
 
 function Player(type, skill, stamina, luck, damage, speed, toughness, armour, items) {
     this.type = type;
@@ -90,18 +90,26 @@ let armour =
 
 let items = {
     healingPotion: {
+        itemName: "1. Healing potion",
+        quantity: 1,
         stamina: 10,
     },
     weakHealingPotion: {
+        itemName: "2. Weak healing potion",
         stamina: 5,
     },
     fireBomb: {
+        itemName: "3. Fire bomb",
+        quantity: 1,
         damage: 5,
     },
     poisonWindGlobe: {
+        itemName: "4. Poison wind globe",
+        quantity: 1,
         damage: 7,
-    }
+    },
  };
+
 
 let weaponsInventoryLength = Object.keys(weapons).length;
 let armourInventoryLength = Object.keys(armour).length;
@@ -168,9 +176,23 @@ function getMonsterAttackStrength() {
     // console.log(monsterWeaponsBonus);
 }
 
+function useItem () {
+    console.log('Use an Item? select the corresponding number of the item you want to use or 0 for no');
+     // Iterate over the properties of the items object
+for (let key in items) {
+    if (items.hasOwnProperty(key)) {
+        console.log(items[key].itemName);
+    }
+}
+const useItem = prompt('select item number (or 0 to skip): ');
+}
 
 function fight() {
 
+    battleRound+=1;
+    
+    console.log("----- Battle round " + battleRound + " -----");
+    useItem();
     if (currentMonsterStamina == 0 || currentMonsterStamina < 0) {
         console.log(`The ${randomMonsterType} lies dead at your feet`);
     } else if (currentHeroStamina == 0 || currentHeroStamina < 0) {
@@ -225,7 +247,7 @@ function fightAgainYorN() {
     console.log(answer);
 
     if (answer === "Y" || answer === "y") {
-        console.log("fight again!");
+        // console.log("fight again!");
         fight();
     } else if (answer === "N" || answer === "n") {
         console.log("Run for your life!");
