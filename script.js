@@ -88,6 +88,21 @@ let armour =
     },
  }
 
+let items = {
+    healingPotion: {
+        stamina: 10,
+    },
+    weakHealingPotion: {
+        stamina: 5,
+    },
+    fireBomb: {
+        damage: 5,
+    },
+    poisonWindGlobe: {
+        damage: 7,
+    }
+ };
+
 let weaponsInventoryLength = Object.keys(weapons).length;
 let armourInventoryLength = Object.keys(armour).length;
 
