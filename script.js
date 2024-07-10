@@ -2,7 +2,7 @@ const prompt = require('prompt-sync')();
 let randomD12Num;
 let heroAttackStrength;
 let monsterAttackStrength;
-let currentMonsterStamina
+let currentMonsterStamina = 0;
 let currentHeroStamina = 12;
 let battleRound = 0;
 let itemResponse;
@@ -151,6 +151,8 @@ let randomMonsterIndex = Math.floor(Math.random() * possibleMonsters.length);
 //gets the name field for the random monster
 let randomMonster = possibleMonsters[randomMonsterIndex];
 let randomMonsterType = possibleMonsters[randomMonsterIndex].type;
+currentMonsterStamina = (possibleMonsters[randomMonsterIndex].stamina);
+
 console.log("the monster is a " + randomMonsterType);
 console.log(`The ${randomMonster.type} carries a rusty ` + randomWeapon + " (skill +" + monsterWeaponsSkillBonus + ")");
 console.log(`The ${randomMonster.type} is wearing battered ` + randomArmour + " armour" + " (skill +" + monsterArmourSkillBonus + ", protection +" + monsterArmourProtectionBonus + ")");
@@ -213,8 +215,10 @@ function useWhichItem() {
         console.log("Fire bomb has been thrown!"); 
         console.log(`The ${randomMonsterType} suffers ${items.fireBomb.damage} damage`);
         currentMonsterStamina -= 5;
-        console.log(currentMonsterStamina); }
-
+        if(currentMonsterStamina > 0){ 
+        console.log(`current ${randomMonsterType} stamina ` + currentMonsterStamina); 
+    }
+    }
         else if (itemResponse === "4") { console.log("Poison wind globe has been thrown!"); }
 };
 
@@ -234,10 +238,9 @@ function fight() {
 
         if (heroAttackStrength > monsterAttackStrength) {
             console.log(`hero wounds! ${randomMonster.type} goes arrrrrgghhh`)
-            currentMonsterStamina = (possibleMonsters[randomMonsterIndex].stamina);
+            currentMonsterStamina -= 2;
 
             //updates the specified monster stamina as the fight goes on
-            possibleMonsters[randomMonsterIndex].stamina = currentMonsterStamina - 2;
             console.log(`${randomMonster.type} stamina = ` + currentMonsterStamina);
             if (currentMonsterStamina == 0 || currentMonsterStamina < 0) {
                 console.log("The monster lies dead at your feet.");
