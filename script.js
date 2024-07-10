@@ -208,18 +208,42 @@ function useWhichItem() {
 
     const useItem = prompt('select item number (0 to skip): ');
     itemResponse = `${useItem}`;
-    if (itemResponse === "0") { console.log("No item used"); }
+    if (itemResponse === "0") { console.log("No item used");}
+
     else if (itemResponse === "1") { console.log("Strong healing potion has been drunk! Stamina restored to full!"); }
+    
+    
     else if (itemResponse === "2") { console.log("Weak healing potion has been drunk! 8 Stamina restored!"); }
-    else if (itemResponse === "3") { 
-        console.log("Fire bomb has been thrown!"); 
-        console.log(`The ${randomMonsterType} suffers ${items.fireBomb.damage} damage`);
-        currentMonsterStamina -= 5;
-        if(currentMonsterStamina > 0){ 
-        console.log(`current ${randomMonsterType} stamina ` + currentMonsterStamina); 
+
+    else if (itemResponse === "3") {
+        if (items.fireBomb.quantity > 0) {
+            console.log("Fire bomb has been thrown!");
+            console.log(`The ${randomMonsterType} suffers ${items.fireBomb.damage} damage`);
+            currentMonsterStamina -= items.fireBomb.damage;
+            if (currentMonsterStamina > 0) {
+                console.log(`current ${randomMonsterType} stamina ` + currentMonsterStamina);
+                items.fireBomb.quantity -= 1;
+            }
+        } else {
+            console.log("out of firebombs, please choose again or skip");
+            useWhichItem();
+        }
     }
+
+    else if (itemResponse === "4") { 
+        if (items.poisonWindGlobe.quantity > 0) {
+            console.log("A poison wind globe has been thrown!");
+            console.log(`The ${randomMonsterType} suffers ${items.poisonWindGlobe.damage} damage`);
+            currentMonsterStamina -= items.poisonWindGlobe.damage;
+            if (currentMonsterStamina > 0) {
+                console.log(`current ${randomMonsterType} stamina ` + currentMonsterStamina);
+                items.poisonWindGlobe.quantity -= 1;
+            }
+        } else {
+            console.log("out of poison wind globes, please choose again or skip");
+            useWhichItem();
+        }
     }
-        else if (itemResponse === "4") { console.log("Poison wind globe has been thrown!"); }
 };
 
 function fight() {
